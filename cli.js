@@ -13,6 +13,7 @@ const isString = require('lodash/isString');
 const isRegExp = require('lodash/isRegExp');
 const map = require('lodash/map');
 const escapeRegExp = require('lodash/escapeRegExp');
+const tempy = require('tempy');
 
 const file = require('./lib/file-helper');
 const critical = require('.');
@@ -169,8 +170,12 @@ function run(data) {
         opts.html = data;
     } else {
         opts.src = cli.input[0]; // eslint-disable-line prefer-destructuring
-        if (opts.src && !file.isExternal(opts.src)) {
-            opts.src = path.resolve(cli.input[0]);
+        if (opts.src) {
+            if (file.isExternal(opts.src)) {
+                opts.base = tempy.root;
+            } else {
+                opts.src = path.resolve(cli.input[0]);
+            }
         }
     }
 
