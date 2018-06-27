@@ -172,7 +172,10 @@ function run(data) {
         opts.src = cli.input[0]; // eslint-disable-line prefer-destructuring
         if (opts.src) {
             if (file.isExternal(opts.src)) {
-                opts.base = tempy.root;
+                opts.base = tempy.directory();
+                if (!opts.destFolder) {
+                    opts.destFolder = opts.base;
+                }
             } else {
                 opts.src = path.resolve(cli.input[0]);
             }
